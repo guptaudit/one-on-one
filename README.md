@@ -1,75 +1,107 @@
 # 1:1 Ledger
 
-A private, local web app for tracking your 1:1 conversations — both
-with your manager and with each of your direct reports. Runs entirely
-on your own computer. Nothing is sent over the internet.
+A private local web app for tracking your 1:1 conversations with your
+manager, reportees, and other collaborators. The entire app runs on
+your machine and stores data locally in `oneonones.db`.
 
-## Setup (one time)
+## Features
 
-You need Python 3 and the Flask package.
+- Local SQLite database stored in `oneonones.db`
+- Track one manager plus multiple reportees and other people
+- Log meeting notes and action items per 1:1
+- Carry open action items forward into the next meeting
+- Edit past meetings and action items
+- Mark action items done from any view
+- View all open action items in a single drawer
+- Generate an HTML email summary and download an Outlook `.eml` draft
+- Choose from multiple theme options in settings
+- Backup and restore the database from the settings panel
+- Clear the local database with confirmation
 
-1. Check you have Python 3: open a terminal and run `python3 --version`.
-   If it's not installed, get it from python.org.
+## Screenshots
+
+![Dashboard](screenshots/dashboard.png)
+*Dashboard with people list, active ledger, and open items count.*
+
+![Email Draft](screenshots/email-draft.png)
+*Email draft modal with HTML preview and Outlook export.*
+
+![Settings](screenshots/settings.png)
+*Settings modal with theme selection, backup, restore, and clear database.*
+
+## Requirements
+
+- Python 3.8 or later
+- Flask
+
+## Install
+
+1. Open a terminal in the application folder.
 2. Install Flask:
 
-   ```
-   pip install flask
-   ```
-
-   If that fails with a permissions error, try:
-
-   ```
-   pip install flask --break-system-packages
+   ```bash
+   python -m pip install flask
    ```
 
-## Running it
+## Run the app
 
-1. Put the `app.py` file and the `static` folder in the same folder
-   (don't separate them — `app.py` needs to find `static` next to it).
-2. Open a terminal in that folder and run:
+1. From the project folder, run:
 
-   ```
-   python3 app.py
+   ```bash
+   python app.py
    ```
 
-3. Your browser should open automatically to `http://127.0.0.1:5151`.
-   If it doesn't, open that address yourself.
-4. To stop the app, go back to the terminal and press `Ctrl+C`.
+2. The app opens automatically at `http://127.0.0.1:5151`.
+3. If your browser does not open, navigate to that address manually.
+4. Stop the app with `Ctrl+C` in the terminal.
 
-Your data lives in a file called `oneonones.db`, created next to
-`app.py` the first time you run it. Back this file up however you'd
-back up any file (copy it to a drive, a personal cloud folder, etc.)
-if you want a safety copy. Nothing else needs backing up.
+## How to use it
 
-## How it works
+### People list
 
-**Left side:** your manager (one slot) and your reportees (as many as
-you like). Click a name to open their ledger.
+- Add a manager, reportee, or other contact from the left rail.
+- Click a person to open their ledger.
+- The manager section only keeps one active manager.
 
-**Main area:** a running, dated log of every 1:1 with whoever's
-selected — most recent first. Each entry holds your notes plus any
-action items from that conversation.
+### Log a 1:1
 
-- **Log a 1:1** — opens a form for today's (or any) date, free-text
-  notes, and action items. Mark whether each action item is on you
-  or on them.
-- Any action item left **open** automatically shows up at the top of
-  your next 1:1 with that person, and in the **open action items**
-  count in the bottom-left, so nothing quietly drops.
-- Click the checkbox next to any action item, anywhere, to mark it
-  done.
-- **Edit** on any past entry lets you fix notes or action items after
-  the fact.
-- The bottom-left button shows every open action item across your
-  manager and all reportees in one list.
+- Click **Log a 1:1** to record a meeting.
+- Add notes and action items.
+- Use the owner selector to mark whether the item is assigned to you or them.
 
-## If something looks off
+### Action items
 
-- **Page won't load** — make sure the terminal still shows the app
-  running (no error message), and that you're going to
-  `http://127.0.0.1:5151` exactly.
-- **"Address already in use"** — the app is probably already running
-  in another terminal window or tab. Just open `127.0.0.1:5151` in
-  your browser.
-- **Want a clean slate** — close the app, delete `oneonones.db`, and
-  start it again. A fresh empty database will be created.
+- Open action items appear in the next meeting for that person.
+- The bottom-left drawer shows all open action items across everyone.
+- Click the checkbox to mark an item done.
+
+### Email draft
+
+- Open the email draft modal to generate a formatted meeting summary.
+- Copy the HTML or download an Outlook-compatible `.eml` file.
+
+### Settings
+
+- Click the gear icon in the left sidebar to open Settings.
+- Choose from available themes.
+- Backup the database to download `oneonones.db`.
+- Restore a database file from disk.
+- Clear the database if you need a fresh start.
+
+## Backup and restore
+
+- `Backup database` downloads the current `oneonones.db` file.
+- `Restore database` lets you upload a previously saved `.db` file.
+- Restoring replaces the current database, so keep your backup file safe.
+
+## Troubleshooting
+
+- If the page does not load, make sure the app is still running in the terminal.
+- If you see **"Address already in use"**, another instance is already running on port `5151`.
+- If the app cannot connect to the database, check that `oneonones.db` is present and not locked.
+- If you want to start fresh, stop the app and delete `oneonones.db`, then run `python app.py` again.
+
+## Notes
+
+- This app is designed for private local use only.
+- No external tracking or networking is performed except local browser requests.
