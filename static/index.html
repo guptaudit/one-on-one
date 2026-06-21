@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1:1 Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="app" id="app">
+
+  <!-- Left rail: people -->
+  <aside class="rail">
+    <div class="rail-header">
+      <span class="rail-mark">1:1</span>
+      <h1 class="rail-title">Ledger</h1>
+    </div>
+
+    <div class="rail-section" id="managerSection">
+      <div class="rail-label">Reporting to</div>
+      <div id="managerList"></div>
+      <button class="rail-add" id="addManagerBtn" type="button">+ Add manager</button>
+    </div>
+
+    <div class="rail-section">
+      <div class="rail-label">My reportees</div>
+      <div id="reporteeList"></div>
+      <button class="rail-add" id="addReporteeBtn" type="button">+ Add reportee</button>
+    </div>
+
+    <div class="rail-section">
+      <div class="rail-label">Others</div>
+      <div id="othersList"></div>
+      <button class="rail-add" id="addOtherBtn" type="button">+ Add other</button>
+    </div>
+
+    <button class="rail-footer-btn" id="openItemsBtn" type="button">
+      <span id="openItemsCount">0</span> open action items
+    </button>
+    <button class="rail-footer-btn rail-settings-btn" id="settingsBtn" type="button" aria-label="Settings">⚙</button>
+  </aside>
+
+  <!-- Main: selected person's ledger -->
+  <main class="ledger" id="ledgerMain">
+    <div class="empty-state" id="emptyState">
+      <p class="empty-title">No one selected yet</p>
+      <p class="empty-body">Add your manager or a reportee on the left to start a ledger.</p>
+    </div>
+
+    <div class="ledger-content" id="ledgerContent" hidden>
+      <header class="ledger-header">
+        <div class="ledger-heading">
+          <p class="ledger-eyebrow" id="personRelationshipLabel">Reportee</p>
+          <h2 class="ledger-name" id="personName">—</h2>
+          <p class="ledger-role" id="personRole"></p>
+        </div>
+        <div class="ledger-actions">
+          <button class="btn btn-ghost" id="editPersonBtn" type="button">Edit</button>
+        <button class="btn btn-secondary" id="emailDraftBtn" type="button">Email draft</button>
+        <button class="btn btn-primary" id="newMeetingBtn" type="button">Log a 1:1</button>
+      </div>
+    </header>
+
+      <div class="carry-banner" id="carryBanner" hidden>
+        <span class="carry-icon">●</span>
+        <span id="carryText"></span>
+      </div>
+
+      <div class="thread" id="thread"></div>
+    </div>
+  </main>
+</div>
+
+<!-- New / Edit meeting modal -->
+<div class="modal-backdrop" id="meetingModalBackdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true">
+    <header class="modal-header">
+      <h3 id="meetingModalTitle">Log a 1:1</h3>
+      <button class="modal-close" id="closeMeetingModal" type="button" aria-label="Close">×</button>
+    </header>
+
+    <div class="modal-body">
+      <label class="field">
+        <span class="field-label">Date</span>
+        <input type="date" id="meetingDateInput" class="field-input">
+      </label>
+
+      <label class="field">
+        <span class="field-label">Notes</span>
+        <textarea id="meetingNotesInput" class="field-textarea" rows="6" placeholder="What did you talk about? Wins, blockers, feedback, context worth remembering..."></textarea>
+      </label>
+
+      <div class="field">
+        <span class="field-label">Action items</span>
+        <div id="actionItemsEditor"></div>
+        <button class="add-item-btn" id="addActionItemBtn" type="button">+ Add action item</button>
+      </div>
+    </div>
+
+    <footer class="modal-footer">
+      <button class="btn btn-ghost" id="cancelMeetingBtn" type="button">Cancel</button>
+      <button class="btn btn-primary" id="saveMeetingBtn" type="button">Save entry</button>
+    </footer>
+  </div>
+</div>
+
+<!-- Add / Edit person modal -->
+<div class="modal-backdrop" id="personModalBackdrop" hidden>
+  <div class="modal modal-small" role="dialog" aria-modal="true">
+    <header class="modal-header">
+      <h3 id="personModalTitle">Add reportee</h3>
+      <button class="modal-close" id="closePersonModal" type="button" aria-label="Close">×</button>
+    </header>
+    <div class="modal-body">
+      <label class="field">
+        <span class="field-label">Name</span>
+        <input type="text" id="personNameInput" class="field-input" placeholder="Jordan Lee">
+      </label>
+      <label class="field">
+        <span class="field-label">Role <span class="field-optional">(optional)</span></span>
+        <input type="text" id="personRoleInput" class="field-input" placeholder="Senior Engineer">
+      </label>
+    </div>
+    <footer class="modal-footer">
+      <button class="btn btn-ghost" id="deletePersonBtn" type="button" hidden>Remove</button>
+      <div class="modal-footer-right">
+        <button class="btn btn-ghost" id="cancelPersonBtn" type="button">Cancel</button>
+        <button class="btn btn-primary" id="savePersonBtn" type="button">Save</button>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<!-- Open items drawer -->
+<div class="modal-backdrop" id="openItemsBackdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true">
+    <header class="modal-header">
+      <h3>Open action items</h3>
+      <button class="modal-close" id="closeOpenItemsModal" type="button" aria-label="Close">×</button>
+    </header>
+    <div class="modal-body" id="openItemsBody">
+    </div>
+  </div>
+</div>
+
+<!-- Settings modal -->
+<div class="modal-backdrop" id="settingsBackdrop" hidden>
+  <div class="modal modal-small" role="dialog" aria-modal="true">
+    <header class="modal-header">
+      <h3>Settings</h3>
+      <button class="modal-close" id="closeSettingsModal" type="button" aria-label="Close">×</button>
+    </header>
+    <div class="modal-body">
+      <div class="field">
+        <span class="field-label">Theme</span>
+        <div class="theme-options" id="themeOptions">
+          <button class="theme-option" type="button" data-theme="default">
+            <span class="theme-option-title">Soft violet</span>
+            <span class="theme-option-meta">Clean neutral with violet accent</span>
+          </button>
+          <button class="theme-option" type="button" data-theme="purple">
+            <span class="theme-option-title">Purple mood</span>
+            <span class="theme-option-meta">Warm violet with modern contrast</span>
+          </button>
+          <button class="theme-option" type="button" data-theme="dark">
+            <span class="theme-option-title">Dark mode</span>
+            <span class="theme-option-meta">Low-light view with purple highlights</span>
+          </button>
+        </div>
+      </div>
+      <div class="field">
+        <span class="field-label">Database</span>
+        <div class="settings-actions">
+          <button class="btn btn-secondary" id="backupDatabaseBtn" type="button">Backup database</button>
+          <button class="btn btn-ghost" id="restoreDatabaseBtn" type="button">Restore database</button>
+          <input type="file" id="restoreDbInput" hidden accept=".db">
+        </div>
+      </div>
+      <div class="field">
+        <span class="field-label">Danger zone</span>
+        <button class="btn btn-ghost" id="clearDatabaseBtn" type="button">Clear database</button>
+      </div>
+    </div>
+    <footer class="modal-footer">
+      <button class="btn btn-primary" id="closeSettingsBtn" type="button">Close</button>
+    </footer>
+  </div>
+</div>
+
+<!-- Email draft modal -->
+<div class="modal-backdrop" id="emailDraftBackdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true">
+    <header class="modal-header">
+      <h3>Email draft</h3>
+      <button class="modal-close" id="closeEmailDraftModal" type="button" aria-label="Close">×</button>
+    </header>
+
+    <div class="modal-body">
+      <label class="field">
+        <span class="field-label">Subject</span>
+        <input type="text" id="emailSubjectInput" class="field-input" readonly>
+      </label>
+      <label class="field">
+        <span class="field-label">Preview</span>
+        <div id="emailPreview" class="email-preview"></div>
+      </label>
+      <label class="field">
+        <span class="field-label">HTML source</span>
+        <textarea id="emailBodyInput" class="field-textarea" rows="10" readonly></textarea>
+      </label>
+    </div>
+
+    <footer class="modal-footer">
+      <button class="btn btn-ghost" id="copyEmailDraftBtn" type="button">Copy HTML</button>
+      <button class="btn btn-secondary" id="downloadEmailDraftBtn" type="button">Download .eml</button>
+      <button class="btn btn-primary" id="closeEmailDraftBtn" type="button">Close</button>
+    </footer>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="/app.js"></script>
+</body>
+</html>
