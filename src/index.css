@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Fraunces", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Custom theme semantic variables mapping to custom CSS properties */
+  --color-paper: var(--paper);
+  --color-paper-raised: var(--paper-raised);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-primary: var(--primary);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-strong: var(--primary-strong);
+  --color-navy: var(--navy);
+  --color-navy-soft: var(--navy-soft);
+  --color-badge-me: var(--badge-me);
+  --color-badge-them: var(--badge-them);
+}
+
+/* Base Styles */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-sans);
+  background-color: var(--paper);
+  color: var(--ink);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--rule-strong);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--navy-soft);
+}
+
+/* Global Transition on theme changes */
+* {
+  transition-property: background-color, border-color, text-decoration-color;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Theme definition block */
+:root, [data-theme="neutral-violet"] {
+  --paper: #F8FAFC;
+  --paper-raised: #FFFFFF;
+  --ink: #0F172A;
+  --ink-soft: #475569;
+  --rule: #E2E8F0;
+  --rule-strong: #CBD5E1;
+  --primary: #6D28D9;
+  --primary-soft: #F5F3FF;
+  --primary-strong: #4C1D95;
+  --navy: #1E293B;
+  --navy-soft: #64748B;
+  --badge-me: #EDE9FE;
+  --badge-them: #FEE2E2;
+}
+
+[data-theme="purple-mood"] {
+  --paper: #FAF5FF;
+  --paper-raised: #FFFFFF;
+  --ink: #1E1B4B;
+  --ink-soft: #4F46E5;
+  --rule: #EEF2F6;
+  --rule-strong: #E0E7FF;
+  --primary: #9333EA;
+  --primary-soft: #FAF5FF;
+  --primary-strong: #7E22CE;
+  --navy: #312E81;
+  --navy-soft: #6366F1;
+  --badge-me: #F3E8FF;
+  --badge-them: #FFEDD5;
+}
+
+[data-theme="forest-emerald"] {
+  --paper: #F0FDF4;
+  --paper-raised: #FFFFFF;
+  --ink: #064E3B;
+  --ink-soft: #0F766E;
+  --rule: #DCFCE7;
+  --rule-strong: #BBF7D0;
+  --primary: #10B981;
+  --primary-soft: #ECFDF5;
+  --primary-strong: #047857;
+  --navy: #022C22;
+  --navy-soft: #065F46;
+  --badge-me: #D1FAE5;
+  --badge-them: #FEF3C7;
+}
+
+[data-theme="midnight-slate"] {
+  --paper: #0B0F19;
+  --paper-raised: #161E2F;
+  --ink: #F8FAFC;
+  --ink-soft: #94A3B8;
+  --rule: #1E293B;
+  --rule-strong: #334155;
+  --primary: #C084FC;
+  --primary-soft: #2E1065;
+  --primary-strong: #A78BFA;
+  --navy: #020617;
+  --navy-soft: #475569;
+  --badge-me: #3B0764;
+  --badge-them: #451A03;
+}

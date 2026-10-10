@@ -1,0 +1,6 @@
+{
+  "name": "1:1 Ledger",
+  "description": "A private, beautiful offline-first 1:1 meeting tracker and action item logger.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

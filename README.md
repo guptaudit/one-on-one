@@ -1,107 +1,165 @@
 # 1:1 Ledger
 
-A private local web app for tracking your 1:1 conversations with your
-manager, reportees, and other collaborators. The entire app runs on
-your machine and stores data locally in `oneonones.db`.
+1:1 Ledger is a private local app for tracking manager and direct-report conversations, follow-ups, and personal daily planning. It is designed for people who want a lightweight relationship tracker without sending data to a remote service.
 
-## Features
+This project is built with React, TypeScript, and Vite, and stores application data locally in the browser using `localStorage`.
 
-- Local SQLite database stored in `oneonones.db`
-- Track one manager plus multiple reportees and other people
-- Log meeting notes and action items per 1:1
-- Carry open action items forward into the next meeting
-- Edit past meetings and action items
-- Mark action items done from any view
-- View all open action items in a single drawer
-- Generate an HTML email summary and download an Outlook `.eml` draft
-- Choose from multiple theme options in settings
-- Backup and restore the database from the settings panel
-- Clear the local database with confirmation
+## Why this app
 
-## Screenshots
+- Keep one place for recurring 1:1 notes and action items
+- Track relationship context for managers, reportees, and other collaborators
+- Preserve a running backlog of open follow-ups
+- Review daily priorities separately from one-on-one history
+- Export backups and keep a local copy of your data
 
-![Dashboard](screenshots/dashboard.png)
-*Dashboard with people list, active ledger, and open items count.*
+## Key features
 
-![Email Draft](screenshots/email-draft.png)
-*Email draft modal with HTML preview and Outlook export.*
+- Manage people with different relationship categories: manager, reportee, or other
+- Log meeting notes with dates, tags, and follow-up actions
+- Create and track action items assigned to you or someone else
+- Open and complete work items from the shared backlog view
+- Keep a scratchpad for each person for pre-meeting talking points
+- Track a daily to-do list with date, status, priority, and category filters
+- Review personal tasks separately from 1:1 meeting history
+- Generate an email-style summary for a person and export a draft
+- Switch between multiple theme presets
+- Export and restore data backups from the app UI
+- Run entirely on your machine without a backend dependency
 
-![Settings](screenshots/settings.png)
-*Settings modal with theme selection, backup, restore, and clear database.*
+## Tech stack
 
-## Requirements
+- React 19
+- TypeScript
+- Vite
+- Motion for lightweight UI animations
+- Lucide icons
+- Browser localStorage for persistence
+- Optional Python static server for production builds
 
-- Python 3.8 or later
-- Flask
+## Project structure
 
-## Install
+```text
+.
+├── app.bat                # Windows runner for setup/build/start
+├── index.html             # Vite entry point
+├── package.json           # Project scripts and dependencies
+├── server.py              # Simple Python server for serving dist/
+├── src/
+│   ├── App.tsx            # Main app shell and state management
+│   ├── types.ts           # Shared TypeScript types
+│   ├── components/        # UI screens and modals
+│   └── utils/             # Storage and export helpers
+├── tsconfig.json
+├── vite.config.ts
+└── README.md
+```
 
-1. Open a terminal in the application folder.
-2. Install Flask:
+## Prerequisites
 
-   ```bash
-   python -m pip install flask
-   ```
+Before running the app, make sure you have:
 
-## Run the app
+- Node.js 18+ recommended
+- npm
+- Optional: Python 3 for the simple offline production server
 
-1. From the project folder, run:
+## Getting started
 
-   ```bash
-   python app.py
-   ```
+### Run the app
 
-2. The app opens automatically at `http://127.0.0.1:5151`.
-3. If your browser does not open, navigate to that address manually.
-4. Stop the app with `Ctrl+C` in the terminal.
+On Windows, simply launch:
+
+```bat
+app.bat
+```
+
+This script handles the setup flow for you:
+
+- installs dependencies
+- builds the app
+- starts the local server
+
+After that, open the local app in your browser at:
+
+```text
+http://localhost:3000
+```
+
+### Manual option
+
+If you prefer to run it yourself:
+
+```bash
+npm install
+npm run build
+python server.py
+```
 
 ## How to use it
 
-### People list
+### People and meetings
 
-- Add a manager, reportee, or other contact from the left rail.
-- Click a person to open their ledger.
-- The manager section only keeps one active manager.
+1. Add a person from the sidebar.
+2. Choose the relationship type: manager, reportee, or other.
+3. Open a person and record a 1:1 meeting.
+4. Add meeting notes, tags, and action items.
 
-### Log a 1:1
+### Action items and follow-ups
 
-- Click **Log a 1:1** to record a meeting.
-- Add notes and action items.
-- Use the owner selector to mark whether the item is assigned to you or them.
+- Mark owners as "me" or "them"
+- Keep open tasks visible in an aggregated backlog
+- Close completed items from the UI when work is done
+- Carry forward action items from previous conversations
 
-### Action items
+### Daily plan
 
-- Open action items appear in the next meeting for that person.
-- The bottom-left drawer shows all open action items across everyone.
-- Click the checkbox to mark an item done.
+Use the daily to-do panel to manage personal tasks separately from meeting notes. This feature helps you keep a focused personal task list alongside your 1:1 tracking.
 
-### Email draft
+You can filter by:
 
-- Open the email draft modal to generate a formatted meeting summary.
-- Copy the HTML or download an Outlook-compatible `.eml` file.
+- date
+- overdue items
+- status
+- priority
+- category
 
-### Settings
+You can also mark tasks complete, review priorities, and keep a running daily workflow without mixing it into your meeting notes.
 
-- Click the gear icon in the left sidebar to open Settings.
-- Choose from available themes.
-- Backup the database to download `oneonones.db`.
-- Restore a database file from disk.
-- Clear the database if you need a fresh start.
+### Email summary
 
-## Backup and restore
+Open the email modal to generate a formatted summary for a person and export it as a draft.
 
-- `Backup database` downloads the current `oneonones.db` file.
-- `Restore database` lets you upload a previously saved `.db` file.
-- Restoring replaces the current database, so keep your backup file safe.
+### Data backup
+
+Use the settings area to:
+
+- export a local backup JSON file
+- import a saved backup
+- clear the current data if needed
+
+## Data and privacy
+
+This application is intentionally local-first:
+
+- data is saved in the browser's local storage
+- there is no central database or remote API required for the core product
+- backups are exported as JSON files so you can keep copies on your own machine
+
+## Useful scripts
+
+```bash
+npm run dev      # local development server
+npm run build    # production build
+npm run preview  # preview production bundle
+npm run lint     # TypeScript type check
+```
 
 ## Troubleshooting
 
-- If the page does not load, make sure the app is still running in the terminal.
-- If you see **"Address already in use"**, another instance is already running on port `5151`.
-- If the app cannot connect to the database, check that `oneonones.db` is present and not locked.
-- If you want to start fresh, stop the app and delete `oneonones.db`, then run `python app.py` again.
+- If the app does not load, ensure dependencies were installed with `npm install`.
+- If a port is already in use, stop the other process or update the port in the Vite config.
+- If data seems missing, check whether the browser local storage for the app was cleared.
+- If you want a fresh start, use the clear-data action from the app UI or remove the stored local state in the browser.
 
-## Notes
+## License
 
-- This app is designed for private local use only.
-- No external tracking or networking is performed except local browser requests.
+This project is for personal productivity use and is not currently governed by a formal public license file in the repository. If you plan to distribute or reuse it, confirm the ownership and licensing requirements with the project maintainer before publishing or commercializing it.
